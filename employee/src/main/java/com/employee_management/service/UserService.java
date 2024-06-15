@@ -28,7 +28,8 @@ public class UserService implements UserDetailsService {
 
 
     public List<User> findAllUser() {
-        return userRepository.findAll();
+        List<User> users= userRepository.findAll();
+        return users.
     }
 
     public long addUser(User user) {

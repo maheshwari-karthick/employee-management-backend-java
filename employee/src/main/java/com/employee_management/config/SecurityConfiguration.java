@@ -1,10 +1,11 @@
 package com.employee_management.config;
 
-import com.employee_management.filter.JWTFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -12,16 +13,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private final JWTFilter jwtFilter;
+    @Value("${jwt.secret}")
+    private String secretKey;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     private final ApplicationConfiguration applicationConfiguration;
-
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -30,12 +32,6 @@ public class SecurityConfiguration {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authHttp -> {
-                            authHttp.requestMatchers("/user").permitAll();
-                            authHttp.requestMatchers("/user/all").permitAll();
-                            authHttp.requestMatchers("/employee").permitAll();
-                            authHttp.requestMatchers("/employee/**").permitAll();
-                            authHttp.requestMatchers("/department").permitAll();
-                            authHttp.requestMatchers("/department/**").permitAll();
                             authHttp.requestMatchers("/swagger-ui/**").permitAll();
                             authHttp.requestMatchers("/v3/api-docs/**").permitAll();
                             authHttp.requestMatchers("/swagger-resources/**").permitAll();
@@ -44,13 +40,25 @@ public class SecurityConfiguration {
                             authHttp.anyRequest().authenticated();
                         }
                 )
-               // .formLogin(l -> l.defaultSuccessUrl("/employee"))
-              //  .logout(l -> l.logoutSuccessUrl("/user"))
-                .httpBasic(Customizer.withDefaults())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(applicationConfiguration.authenticationProvider())
                 .build();
     }
 
+    @Bean
+    public AuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        return new AuthenticationFilter("/authenticate", secretKey);
+    }
+
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        // Provide your JwtAuthorizationFilter bean implementation here
+        return new JwtAuthorizationFilter("/**", secretKey);
+    }
+
 }
+
+
+

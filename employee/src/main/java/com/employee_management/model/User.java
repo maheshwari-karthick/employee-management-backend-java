@@ -38,5 +38,13 @@ public class User implements UserDetails {
         roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(String.valueOf(role))));
         return authorities;
     }
+
+    public User toGetUserResponse() {
+        return User.builder()
+                .id(id)
+                .username(username)
+                .roles(roles)
+                .build();
+    }
 }
 

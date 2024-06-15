@@ -45,10 +45,4 @@ public class UserController {
         return new ResponseEntity<>("User got Updated : " + userId, HttpStatus.OK);
     }
 
-    @GetMapping("/user/gettoken/{userName}")
-    public ResponseEntity<String> generateTokenByAuthentication(@PathVariable String userName) throws Exception {
-        log.info("generateTokenByAuthentication for user");
-        return new ResponseEntity<>(userService.generateTokenByAuthentication(userName), HttpStatus.OK);
-    }
-
 }

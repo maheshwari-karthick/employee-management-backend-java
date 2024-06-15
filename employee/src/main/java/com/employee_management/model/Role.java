@@ -14,6 +14,7 @@ public enum Role {
     OPERATIONS_MANAGER,
     RESEARCH_ANALYST,
     CEO,
+    ADMIN,
     CTO;
 
     public String getRole() {
