@@ -7,7 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@Log4j2
+@Slf4j
 public class AuthenticationFilter extends OncePerRequestFilter {
 
     private final String pathPattern;
@@ -39,7 +39,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-                                                                               throws ServletException, IOException {
+            throws ServletException, IOException {
         if (isAuthenticationAttempt(request)) {
             try {
                 // Extract credentials from request (e.g., JSON payload)
@@ -92,7 +92,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     }
 
     private Authentication authenticate(String username, String password) throws AuthenticationException {
-        // Implement your custom authentication logic here (e.g., authenticate against database)
         // Example: Using Spring Security's AuthenticationManager to authenticate
         return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }

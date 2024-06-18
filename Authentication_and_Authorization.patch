@@ -1,0 +1,476 @@
+Subject: [PATCH] Authentication and Authorization
+---
+Index: employee/src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/employee/src/main/resources/application.properties b/employee/src/main/resources/application.properties
+--- a/employee/src/main/resources/application.properties	(revision 786439e25edc40167d5443fdc4770f27bcbc78d8)
++++ b/employee/src/main/resources/application.properties	(date 1718465425394)
+@@ -1,11 +1,5 @@
+ spring.application.name=employee_management
+ 
+-# Security Configuration
+-# Configure in-memory user
+-spring.security.user.name=test
+-spring.security.user.password=test
+-spring.security.user.roles=USER
+-
+ spring.datasource.url=jdbc:h2:file:./data/employee
+ spring.datasource.driverClassName=org.h2.Driver
+ spring.datasource.username=test
+@@ -23,6 +17,5 @@
+ spring.jpa.properties.hibernate.globally_quoted_identifiers_skip_column_definitions=true;
+ 
+ server.port=8080
+-#jwt.secret=9df8505bb4eb7833d0f07cebec765d065344850a4548a5f8c3a9ffea5c01e6bd
+-jwt.secret=ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnpkV0lpT2lJeE1qTTBOVFkzT0Rrd0lpd2libUZ0WlNJNklsUm9hV05ySWl3aWFXRjBJam94TlRFMk1qTTVNREl5ZlEuMGJ6bklsQWpRMmVqNnlkeEJsTFRYZ0lSNFQ0cUwxTG0zVkw0NVJGWXdGTQ
++jwt.secret=DORj3hb0HtpjcjGWsqSn42luTGTiM9CO1lA6qgb3LOf2reIeueaqBX4VsgaaqQpmgjolA6svr1Ug
+ 
+Index: employee/src/main/java/com/employee_management/config/SecurityConfiguration.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/employee/src/main/java/com/employee_management/config/SecurityConfiguration.java b/employee/src/main/java/com/employee_management/config/SecurityConfiguration.java
+--- a/employee/src/main/java/com/employee_management/config/SecurityConfiguration.java	(revision 786439e25edc40167d5443fdc4770f27bcbc78d8)
++++ b/employee/src/main/java/com/employee_management/config/SecurityConfiguration.java	(date 1718465425392)
+@@ -1,10 +1,11 @@
+ package com.employee_management.config;
+ 
+-import com.employee_management.filter.JWTFilter;
+ import lombok.RequiredArgsConstructor;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.beans.factory.annotation.Value;
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.Configuration;
+-import org.springframework.security.config.Customizer;
++import org.springframework.security.authentication.AuthenticationManager;
+ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+ import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+ import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+@@ -12,17 +13,18 @@
+ import org.springframework.security.web.SecurityFilterChain;
+ import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+ 
+-
+ @Configuration
+ @EnableWebSecurity
+ @RequiredArgsConstructor
+ public class SecurityConfiguration {
+ 
+-    private final JWTFilter jwtFilter;
++    @Value("${jwt.secret}")
++    private String secretKey;
++    @Autowired
++    private AuthenticationManager authenticationManager;
++
+     private final ApplicationConfiguration applicationConfiguration;
+ 
+-
+-
+     @Bean
+     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+ 
+@@ -30,12 +32,6 @@
+                 .cors(AbstractHttpConfigurer::disable)
+                 .authorizeHttpRequests(
+                         authHttp -> {
+-                            authHttp.requestMatchers("/user").permitAll();
+-                            authHttp.requestMatchers("/user/all").permitAll();
+-                            authHttp.requestMatchers("/employee").permitAll();
+-                            authHttp.requestMatchers("/employee/**").permitAll();
+-                            authHttp.requestMatchers("/department").permitAll();
+-                            authHttp.requestMatchers("/department/**").permitAll();
+                             authHttp.requestMatchers("/swagger-ui/**").permitAll();
+                             authHttp.requestMatchers("/v3/api-docs/**").permitAll();
+                             authHttp.requestMatchers("/swagger-resources/**").permitAll();
+@@ -44,13 +40,25 @@
+                             authHttp.anyRequest().authenticated();
+                         }
+                 )
+-               // .formLogin(l -> l.defaultSuccessUrl("/employee"))
+-              //  .logout(l -> l.logoutSuccessUrl("/user"))
+-                .httpBasic(Customizer.withDefaults())
+-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
++                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
++                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                 .authenticationProvider(applicationConfiguration.authenticationProvider())
+                 .build();
+     }
+ 
++    @Bean
++    public AuthenticationFilter jwtAuthenticationFilter() throws Exception {
++        return new AuthenticationFilter("/authenticate", secretKey);
++    }
++
++    @Bean
++    public JwtAuthorizationFilter jwtAuthorizationFilter() {
++        // Provide your JwtAuthorizationFilter bean implementation here
++        return new JwtAuthorizationFilter("/**", secretKey);
++    }
++
+ }
++
++
++
+Index: employee/src/main/java/com/employee_management/config/AuthenticationFilter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/employee/src/main/java/com/employee_management/config/AuthenticationFilter.java b/employee/src/main/java/com/employee_management/config/AuthenticationFilter.java
+new file mode 100644
+--- /dev/null	(date 1718465425389)
++++ b/employee/src/main/java/com/employee_management/config/AuthenticationFilter.java	(date 1718465425389)
+@@ -0,0 +1,105 @@
++package com.employee_management.config;
++
++import com.fasterxml.jackson.databind.ObjectMapper;
++import io.jsonwebtoken.Jwts;
++import io.jsonwebtoken.SignatureAlgorithm;
++import jakarta.servlet.FilterChain;
++import jakarta.servlet.ServletException;
++import jakarta.servlet.http.HttpServletRequest;
++import jakarta.servlet.http.HttpServletResponse;
++import lombok.extern.log4j.Log4j2;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.HttpHeaders;
++import org.springframework.http.HttpStatus;
++import org.springframework.security.authentication.AuthenticationManager;
++import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
++import org.springframework.security.core.Authentication;
++import org.springframework.security.core.AuthenticationException;
++import org.springframework.security.core.context.SecurityContextHolder;
++import org.springframework.web.filter.OncePerRequestFilter;
++
++import java.io.IOException;
++import java.io.PrintWriter;
++import java.util.Date;
++import java.util.HashMap;
++import java.util.Map;
++
++@Log4j2
++public class AuthenticationFilter extends OncePerRequestFilter {
++
++    private final String pathPattern;
++
++    @Autowired
++    AuthenticationManager authenticationManager;
++    private final String secretKey;
++
++    public AuthenticationFilter(String pathPattern, String secretKey) {
++        this.pathPattern = pathPattern;
++        this.secretKey = secretKey;
++    }
++
++    @Override
++    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
++            throws ServletException, IOException {
++
++        if (isAuthenticationAttempt(request)) {
++            try {
++                // Extract credentials from request (e.g., JSON payload)
++                String username = request.getHeader("username");
++                String password = request.getHeader("password");
++
++                // Perform custom authentication logic (e.g., authenticate against database)
++                Authentication authentication = authenticate(username, password);
++
++                // Set authenticated authentication object to SecurityContext
++                SecurityContextHolder.getContext().setAuthentication(authentication);
++
++                // Generate token and add to response
++                if (authentication.isAuthenticated()) {
++                    String jwtToken = generateToken(username);
++                    response.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken);
++
++                    response.setStatus(HttpStatus.OK.value());
++                    response.setContentType("application/json");
++
++                    Map<String, Object> successResponse = new HashMap<>();
++                    successResponse.put("status", HttpStatus.OK.value());
++                    successResponse.put("access_token", "Bearer " + jwtToken);
++                    successResponse.put("message", "Authentication successful");
++
++                    PrintWriter out = response.getWriter();
++                    out.print(new ObjectMapper().writeValueAsString(successResponse));
++                    out.flush();
++                    return;
++                }
++            } catch (AuthenticationException e) {
++                // Handle authentication failure (e.g., return 401 Unauthorized)
++                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
++                return;
++            }
++
++            return;
++        }
++
++        filterChain.doFilter(request, response);
++    }
++
++    private boolean isAuthenticationAttempt(HttpServletRequest request) {
++        return this.pathPattern.equals(request.getServletPath()) && request.getMethod().equals("POST");
++    }
++
++    private Authentication authenticate(String username, String password) throws AuthenticationException {
++        // Implement your custom authentication logic here (e.g., authenticate against database)
++        // Example: Using Spring Security's AuthenticationManager to authenticate
++        return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
++    }
++
++    private String generateToken(String username) {
++        return Jwts.builder()
++                .setSubject(username)
++                .setIssuedAt(new Date())
++                .setExpiration(new Date(System.currentTimeMillis() + 864000000)) // 10 days validity
++                .signWith(SignatureAlgorithm.HS512, secretKey.getBytes())
++                .compact();
++    }
++}
+Index: employee/src/main/java/com/employee_management/controller/UserController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/employee/src/main/java/com/employee_management/controller/UserController.java b/employee/src/main/java/com/employee_management/controller/UserController.java
+--- a/employee/src/main/java/com/employee_management/controller/UserController.java	(revision 786439e25edc40167d5443fdc4770f27bcbc78d8)
++++ b/employee/src/main/java/com/employee_management/controller/UserController.java	(date 1718465237705)
+@@ -44,11 +44,11 @@
+         long userId = userService.updateUser(user);
+         return new ResponseEntity<>("User got Updated : " + userId, HttpStatus.OK);
+     }
+-
+-    @GetMapping("/user/gettoken/{userName}")
+-    public ResponseEntity<String> generateTokenByAuthentication(@PathVariable String userName) throws Exception {
+-        log.info("generateTokenByAuthentication for user");
+-        return new ResponseEntity<>(userService.generateTokenByAuthentication(userName), HttpStatus.OK);
+-    }
++//
++//    @GetMapping("/user/gettoken/{userName}")
++//    public ResponseEntity<String> generateTokenByAuthentication(@PathVariable String userName) throws Exception {
++//        log.info("generateTokenByAuthentication for user");
++//        return new ResponseEntity<>(userService.generateTokenByAuthentication(userName), HttpStatus.OK);
++//    }
+ 
+ }
+Index: employee/src/main/java/com/employee_management/config/ApplicationConfiguration.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/employee/src/main/java/com/employee_management/config/ApplicationConfiguration.java b/employee/src/main/java/com/employee_management/config/ApplicationConfiguration.java
+--- a/employee/src/main/java/com/employee_management/config/ApplicationConfiguration.java	(revision 786439e25edc40167d5443fdc4770f27bcbc78d8)
++++ b/employee/src/main/java/com/employee_management/config/ApplicationConfiguration.java	(date 1718465237714)
+@@ -4,7 +4,9 @@
+ import lombok.RequiredArgsConstructor;
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.Configuration;
++import org.springframework.security.authentication.AuthenticationManager;
+ import org.springframework.security.authentication.AuthenticationProvider;
++import org.springframework.security.authentication.ProviderManager;
+ import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+ import org.springframework.security.core.userdetails.UserDetailsService;
+ import org.springframework.security.core.userdetails.UsernameNotFoundException;
+@@ -30,6 +32,10 @@
+         return daoAuthenticationProvider;
+     }
+ 
++    @Bean
++    public AuthenticationManager getProviderManager() {
++        return new ProviderManager(authenticationProvider());
++    }
+ 
+     @Bean
+     public UserDetailsService userDetailsService() {
+Index: employee/src/main/java/com/employee_management/config/JwtAuthorizationFilter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/employee/src/main/java/com/employee_management/config/JwtAuthorizationFilter.java b/employee/src/main/java/com/employee_management/config/JwtAuthorizationFilter.java
+new file mode 100644
+--- /dev/null	(date 1718465237713)
++++ b/employee/src/main/java/com/employee_management/config/JwtAuthorizationFilter.java	(date 1718465237713)
+@@ -0,0 +1,102 @@
++package com.employee_management.config;
++
++import com.employee_management.service.UserService;
++import io.jsonwebtoken.Claims;
++import io.jsonwebtoken.Jws;
++import io.jsonwebtoken.Jwts;
++import jakarta.servlet.FilterChain;
++import jakarta.servlet.ServletException;
++import jakarta.servlet.http.HttpServletRequest;
++import jakarta.servlet.http.HttpServletResponse;
++import lombok.extern.log4j.Log4j2;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.HttpHeaders;
++import org.springframework.http.HttpStatus;
++import org.springframework.security.authentication.AuthenticationManager;
++import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
++import org.springframework.security.core.context.SecurityContextHolder;
++import org.springframework.security.core.userdetails.UserDetails;
++import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
++import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
++import org.springframework.web.filter.OncePerRequestFilter;
++import org.thymeleaf.util.StringUtils;
++
++import java.io.IOException;
++import java.util.Date;
++
++@Log4j2
++public class JwtAuthorizationFilter extends OncePerRequestFilter {
++
++    private final String pathPattern;
++
++    @Autowired
++    AuthenticationManager authenticationManager;
++
++    @Autowired
++    UserService userService;
++    private final String secretKey;
++
++    public JwtAuthorizationFilter(String pathPattern, String secretKey) {
++        this.pathPattern = pathPattern;
++        this.secretKey = secretKey;
++    }
++
++    @Override
++    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
++
++        final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
++
++        String username = null;
++        String jwt = null;
++
++        AntPathRequestMatcher matcher = new AntPathRequestMatcher(this.pathPattern);
++
++        if(StringUtils.isEmptyOrWhitespace(authorizationHeader)){
++            response.setStatus(HttpStatus.UNAUTHORIZED.value());
++            response.getWriter().write("Unauthorized");
++            return;
++        }
++
++        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
++            jwt = authorizationHeader.substring(7);
++            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(jwt);
++            Claims body = claimsJws.getBody();
++            username = body.getSubject();
++        }
++
++        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
++            UserDetails userDetails = userService.loadUserByUsername(username);
++
++            if (userDetails != null && validateToken(jwt, userDetails)) {
++                UsernamePasswordAuthenticationToken authenticationToken =
++                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
++                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
++                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
++            }
++        }
++
++        filterChain.doFilter(request, response);
++    }
++
++    private boolean validateToken(String token, UserDetails userDetails) {
++        final String username = extractUsername(token);
++        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
++    }
++
++    private String extractUsername(String token) {
++        return Jwts.parser()
++                .setSigningKey(secretKey.getBytes())
++                .parseClaimsJws(token)
++                .getBody()
++                .getSubject();
++    }
++
++    private boolean isTokenExpired(String token) {
++        final Claims claims = Jwts.parser()
++                .setSigningKey(secretKey.getBytes())
++                .parseClaimsJws(token)
++                .getBody();
++        return claims.getExpiration().before(new Date());
++    }
++
++}
+diff --git a/employee/data/employee.mv.db b/employee/data/employee.mv.db
+index da89101746ee13615bb084c027e1af060e108e53..1780d91a3ea4fa24d1e6d8cc28850b83dfbfdd25
+GIT binary patch
+literal 53248
+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
+KQs-3i|NjRhI%DVn
+

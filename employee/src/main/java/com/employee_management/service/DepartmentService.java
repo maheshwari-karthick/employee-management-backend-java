@@ -39,11 +39,16 @@ public class DepartmentService {
         departmentRepository.deleteById(id);
     }
 
-    public List<Department> getDepartmentsByDepartmentName(String departmentName) {
-        return null;
+    public boolean existsDepartmentByName(String name) {
+        return departmentRepository.existsByDepartmentName(name);
     }
 
-    public List<Department> getDepartmentsByOrganizationName(String organizationName) {
-        return null;
+    public Optional<Department> getDepartmentByName(String name) {
+        return departmentRepository.findByDepartmentName(name);
     }
+
+    public boolean existsDepartmentById(Long id) {
+        return departmentRepository.existsById(id);
+    }
+
 }

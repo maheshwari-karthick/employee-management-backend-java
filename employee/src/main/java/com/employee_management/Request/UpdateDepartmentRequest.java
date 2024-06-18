@@ -8,7 +8,9 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddDepartmentRequest {
+public class UpdateDepartmentRequest {
+    @NonNull
+    private Long id;
 
     @NotBlank(message = "departmentName should not be blank.")
     private String departmentName;
@@ -21,6 +23,7 @@ public class AddDepartmentRequest {
 
     public Department toDepartment() {
         return Department.builder()
+                .id(id)
                 .departmentName(departmentName)
                 .departmentPhone(departmentPhone)
                 .departmentEmail(departmentEmail)
@@ -28,17 +31,5 @@ public class AddDepartmentRequest {
                 .organizationAddress(organizationAddress)
                 .departmentHead(departmentHead)
                 .build();
-    }
-
-    @Override
-    public String toString() {
-        return "AddDepartmentRequest{" +
-                "departmentName='" + departmentName + '\'' +
-                ", departmentPhone='" + departmentPhone + '\'' +
-                ", departmentEmail='" + departmentEmail + '\'' +
-                ", organizationName='" + organizationName + '\'' +
-                ", organizationAddress='" + organizationAddress + '\'' +
-                ", departmentHead='" + departmentHead + '\'' +
-                '}';
     }
 }

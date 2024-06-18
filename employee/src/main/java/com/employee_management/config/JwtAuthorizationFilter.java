@@ -12,12 +12,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.thymeleaf.util.StringUtils;
 
@@ -28,13 +26,9 @@ import java.util.Date;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final String pathPattern;
-
-    @Autowired
-    AuthenticationManager authenticationManager;
-
+    private final String secretKey;
     @Autowired
     UserService userService;
-    private final String secretKey;
 
     public JwtAuthorizationFilter(String pathPattern, String secretKey) {
         this.pathPattern = pathPattern;
@@ -43,22 +37,20 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-                                                                                throws IOException, ServletException {
+            throws IOException, ServletException {
 
         final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         String username = null;
         String jwt = null;
 
-        AntPathRequestMatcher matcher = new AntPathRequestMatcher(this.pathPattern);
-
-        if(StringUtils.isEmptyOrWhitespace(authorizationHeader)){
+        if (StringUtils.isEmptyOrWhitespace(authorizationHeader)) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.getWriter().write("Unauthorized");
             return;
         }
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+        if (authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(jwt);
             Claims body = claimsJws.getBody();

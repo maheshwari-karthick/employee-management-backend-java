@@ -30,7 +30,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    private List<String> roles;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "roles")
+    private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -39,12 +42,5 @@ public class User implements UserDetails {
         return authorities;
     }
 
-    public User toGetUserResponse() {
-        return User.builder()
-                .id(id)
-                .username(username)
-                .roles(roles)
-                .build();
-    }
 }
 

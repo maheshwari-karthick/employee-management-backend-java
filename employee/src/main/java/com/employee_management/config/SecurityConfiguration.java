@@ -1,11 +1,9 @@
 package com.employee_management.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,12 +16,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
+    private final ApplicationConfiguration applicationConfiguration;
+
     @Value("${jwt.secret}")
     private String secretKey;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    private final ApplicationConfiguration applicationConfiguration;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,8 +28,9 @@ public class SecurityConfiguration {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authHttp -> {
+                            //  authHttp.requestMatchers("**/user/**");
                             authHttp.requestMatchers("/swagger-ui/**").permitAll();
-                            authHttp.requestMatchers("/v3/api-docs/**").permitAll();
+                            authHttp.requestMatchers("/api-docs/**").permitAll();
                             authHttp.requestMatchers("/swagger-resources/**").permitAll();
                             authHttp.requestMatchers("/webjars/**").permitAll();
                             authHttp.requestMatchers("/h2-console/**").permitAll();

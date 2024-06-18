@@ -3,28 +3,30 @@ package com.employee_management.Request;
 import com.employee_management.model.Employee;
 import com.employee_management.model.Gender;
 import com.employee_management.model.Role;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UpdateEmployeeRequest {
+    @NonNull
+    private Long id;
 
-    @NotEmpty
-    private long id;
-    @NotEmpty
+    @NotBlank(message = "firstName should not be blank.")
     private String firstName;
+
     private String lastName;
     private String email;
     private String phone;
     private Gender gender;
-    private int age;
-    private double salary;
+    private Integer age;
+    private Double salary;
     private Role role;
     private String address;
-    @NotEmpty
-    private long departmentId;
+    @NonNull
+    private Long departmentId;
 
     public Employee toEmployee() {
         return Employee.builder()

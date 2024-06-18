@@ -28,50 +28,30 @@ public class EmployeeService {
     }
 
     public long addEmployee(Employee Employee) {
+
         return employeeRepository.save(Employee).getId();
     }
 
     public long updateEmployee(Employee employee) {
+
         return employeeRepository.save(employee).getId();
     }
 
     public void deleteEmployee(long id) {
+
         employeeRepository.deleteById(id);
     }
+
     public List<Employee> getDepartmentById(long id) throws Exception {
-       Optional<List<Employee>> employees = employeeRepository.findByDepartmentId(id);
-       if (employees.isPresent()) {
-           return employees.get();
-       }
-       throw new NotFoundException();
+        Optional<List<Employee>> employees = employeeRepository.findByDepartmentId(id);
+        if (employees.isPresent()) {
+            return employees.get();
+        }
+        throw new NotFoundException();
     }
 
-    //    public List<Employee> getEmployeeByName(String name) {
-//        return employeeRepository.findByName(name);
-//    }
-    public List<Employee> getEmployeeByGender(String gender) {
-        return null;
+    public boolean existsEmployeeById(long id) {
+        return employeeRepository.existsById(id);
     }
-
-    public List<Employee> getEmployeeByAge(String age) {
-        return null;
-    }
-
-    public List<Employee> getEmployeeByRole(String role) {
-        return null;
-    }
-
-    public List<Employee> getEmployeeBySalary(double salary) {
-        return null;
-    }
-
-    public List<Employee> getEmployeeBySalaryBetween(double salary1, double salary2) {
-        return null;
-    }
-
-    public List<Employee> getEmployeeBySalaryGreaterThan(double salary) {
-        return null;
-    }
-
 }
 

@@ -4,28 +4,28 @@ import com.employee_management.model.Employee;
 import com.employee_management.model.Gender;
 import com.employee_management.model.Role;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class AddEmployeeRequest {
 
-    @NotBlank
+    @NotBlank(message = "firstName should  not be blank.")
     private String firstName;
 
     private String lastName;
     private String email;
     private String phone;
-    private String gender;
-    private int age;
-    private double salary;
-    private String role;
+    private Gender gender;
+    private Integer age;
+    private Double salary;
+    private Role role;
     private String address;
 
-    @NotEmpty
-    private long departmentId;
+    @NonNull
+    private Long departmentId;
 
     public Employee toEmployee() {
         return Employee.builder()
@@ -33,10 +33,10 @@ public class AddEmployeeRequest {
                 .lastName(lastName)
                 .email(email)
                 .phone(phone)
-                .gender(Gender.valueOf(gender))
+                .gender(gender)
                 .age(age)
                 .salary(salary)
-                .role(Role.valueOf(role))
+                .role(role)
                 .address(address)
                 .departmentId(departmentId)
                 .build();

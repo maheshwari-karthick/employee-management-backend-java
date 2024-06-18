@@ -1,7 +1,6 @@
 package com.employee_management.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 @Entity
@@ -16,8 +15,7 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @NotEmpty
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String departmentName;
 
     private String departmentPhone;

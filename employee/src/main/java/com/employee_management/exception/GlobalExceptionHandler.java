@@ -46,6 +46,7 @@ public class GlobalExceptionHandler {
         log.error("Http Message Not Readable Exception", httpMessageNotReadableException);
         return new ResponseEntity<>("Http Message Not Readable Exception : " + httpMessageNotReadableException.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException dataIntegrityViolationException) {
         log.error("Data Integrity Violation", dataIntegrityViolationException);
@@ -57,6 +58,7 @@ public class GlobalExceptionHandler {
         log.error("Http Message Conversion Exception", httpMessageConversionException);
         return new ResponseEntity<>("Http Message Conversion Exception : " + httpMessageConversionException.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntimeException(RuntimeException runtimeException) {
         log.error("Runtime exception", runtimeException);
