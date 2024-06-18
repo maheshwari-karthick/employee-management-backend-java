@@ -23,9 +23,6 @@ import java.util.ArrayList;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
-//@ContextConfiguration(classes = {DepartmentController.class})
-//@ExtendWith(SpringExtension.class)
-//@DisabledInAotMode
 @SpringBootTest
 @AutoConfigureMockMvc
 class DepartmentControllerTest {

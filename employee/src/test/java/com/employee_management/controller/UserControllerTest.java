@@ -24,9 +24,6 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-//@ContextConfiguration(classes = {UserController.class})
-//@ExtendWith(SpringExtension.class)
-//@DisabledInAotMode
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {

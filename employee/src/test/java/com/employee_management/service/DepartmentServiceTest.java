@@ -19,9 +19,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 
-//@ContextConfiguration(classes = {DepartmentService.class})
-//@ExtendWith(SpringExtension.class)
-//@DisabledInAotMode
 @SpringBootTest
 @AutoConfigureMockMvc
 class DepartmentServiceTest {
