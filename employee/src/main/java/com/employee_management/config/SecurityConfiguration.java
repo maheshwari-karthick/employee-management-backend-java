@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                         authHttp -> {
                             //  authHttp.requestMatchers("**/user/**");
                             authHttp.requestMatchers("/swagger-ui/**").permitAll();
-                            authHttp.requestMatchers("/api-docs/**").permitAll();
+                            authHttp.requestMatchers("/v3/api-docs/**").permitAll();
                             authHttp.requestMatchers("/swagger-resources/**").permitAll();
                             authHttp.requestMatchers("/webjars/**").permitAll();
                             authHttp.requestMatchers("/h2-console/**").permitAll();
