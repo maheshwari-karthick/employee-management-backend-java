@@ -8,7 +8,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,19 +16,30 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.OrRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
 import java.util.Date;
 
-@Log4j2
+@Slf4j
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final String pathPattern;
     private final String secretKey;
     @Autowired
     UserService userService;
+
+    private final RequestMatcher excludedPaths = new OrRequestMatcher(
+                new AntPathRequestMatcher("/swagger-ui/**"),
+                new AntPathRequestMatcher("/h2-console/**"),
+                new AntPathRequestMatcher("/swagger-resources/**"),
+                new AntPathRequestMatcher("/webjars/****"),
+                new AntPathRequestMatcher("/v3/api-docs/**")
+        );
 
     public JwtAuthorizationFilter(String pathPattern, String secretKey) {
         this.pathPattern = pathPattern;
@@ -43,6 +54,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String username = null;
         String jwt = null;
+
+        if (excludedPaths.matches(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         if (StringUtils.isEmptyOrWhitespace(authorizationHeader)) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
@@ -69,6 +85,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+
     }
 
     private boolean validateToken(String token, UserDetails userDetails) {

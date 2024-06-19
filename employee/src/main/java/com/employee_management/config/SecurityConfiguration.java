@@ -26,17 +26,6 @@ public class SecurityConfiguration {
 
         return http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        authHttp -> {
-                            //  authHttp.requestMatchers("**/user/**");
-                            authHttp.requestMatchers("/swagger-ui/**").permitAll();
-                            authHttp.requestMatchers("/v3/api-docs/**").permitAll();
-                            authHttp.requestMatchers("/swagger-resources/**").permitAll();
-                            authHttp.requestMatchers("/webjars/**").permitAll();
-                            authHttp.requestMatchers("/h2-console/**").permitAll();
-                            authHttp.anyRequest().authenticated();
-                        }
-                )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -52,7 +41,7 @@ public class SecurityConfiguration {
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
         // Provide your JwtAuthorizationFilter bean implementation here
-        return new JwtAuthorizationFilter("/**", secretKey);
+        return new JwtAuthorizationFilter("", secretKey);
     }
 
 }
