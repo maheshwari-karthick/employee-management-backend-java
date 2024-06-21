@@ -1,5 +1,6 @@
 package com.employee_management.exception;
 
+import io.jsonwebtoken.security.SignatureException;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleNotFoundException(NotFoundException notFoundException) {
         log.error("Not found exception", notFoundException);
         return new ResponseEntity<>("Not found exception : " + notFoundException.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<String> handleNotFoundException(SignatureException signatureException) {
+        log.error("Signature exception", signatureException);
+        return new ResponseEntity<>("Invalid token : " + signatureException.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(BadRequestException.class)

@@ -53,7 +53,7 @@ class DepartmentServiceTest {
     }
 
     @Test
-    void shouldGetDepartmentByIdReturnException() throws Exception {
+    public void shouldGetDepartmentByIdReturnException() throws Exception {
 
         Optional<Department> emptyResult = Optional.empty();
         when(departmentRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
@@ -63,7 +63,7 @@ class DepartmentServiceTest {
     }
 
     @Test
-    void shouldAddDepartment() {
+   public void shouldAddDepartment() {
         Department department = new Department(1l, "IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
 
         when(departmentRepository.save(Mockito.<Department>any())).thenReturn(department);
@@ -75,9 +75,7 @@ class DepartmentServiceTest {
     }
 
     @Test
-    void shouldUpdateDepartment() {
-        // Arrange
-
+    public void shouldUpdateDepartment() {
         Department department = new Department(1l, "IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
 
         when(departmentRepository.save(Mockito.<Department>any())).thenReturn(department);
@@ -89,10 +87,48 @@ class DepartmentServiceTest {
     }
 
     @Test
-    void shouldDeleteDepartmentById() {
+    public void shouldDeleteDepartmentById() {
         doNothing().when(departmentRepository).deleteById(Mockito.<Long>any());
         departmentService.deleteDepartmentById(1L);
         verify(departmentRepository).deleteById(eq(1L));
         assertTrue(departmentService.getAllDepartments().isEmpty());
     }
+    @Test
+    public void shouldGetExistsDepartmentByName() {
+        when(departmentRepository.existsByDepartmentName(Mockito.<String>any())).thenReturn(true);
+        boolean actualExistsDepartmentByNameResult = departmentService.existsDepartmentByName("IT");
+        verify(departmentRepository).existsByDepartmentName(eq("IT"));
+        assertTrue(actualExistsDepartmentByNameResult);
+    }
+    @Test
+   public void shouldGetDepartmentByName() {
+        Department department = new Department(1l, "IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
+
+        Optional<Department> ofResult = Optional.of(department);
+        when(departmentRepository.findByDepartmentName(Mockito.<String>any())).thenReturn(ofResult);
+
+        Optional<Department> actualDepartmentByName = departmentService.getDepartmentByName("IT");
+        verify(departmentRepository).findByDepartmentName(eq("IT"));
+        assertSame(ofResult, actualDepartmentByName);
+    }
+    @Test
+    public void shouldExistsDepartmentById() {
+        when(departmentRepository.existsById(Mockito.<Long>any())).thenReturn(false);
+        boolean actualExistsDepartmentByIdResult = departmentService.existsDepartmentById(1L);
+        verify(departmentRepository).existsById(eq(1L));
+        assertTrue(actualExistsDepartmentByIdResult);
+    }
+    @Test
+    public void shouldDeleteAllDepartments() {
+        doNothing().when(departmentRepository).deleteAll();
+        departmentService.deleteAllDepartments();
+        verify(departmentRepository).deleteAll();
+    }
+    @Test
+    public void shouldDeleteAllByIdInBatch() throws Exception {
+        doNothing().when(departmentRepository).deleteAllByIdInBatch(Mockito.<Iterable<Long>>any());
+        departmentService.deleteAllDepartmentsByIdInBatch(new ArrayList<>());
+        assertTrue(departmentService.getAllDepartments().isEmpty());
+    }
+
 }

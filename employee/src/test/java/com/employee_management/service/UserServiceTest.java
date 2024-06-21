@@ -37,8 +37,8 @@ class UserServiceTest {
 
     @Test
     void shouldFindAllUser() {
-        User user1 = new User(1l,"Mahi","Mahi",List.of(Role.ADMIN));
-        User user2 = new User(2l,"Test","Test",List.of(Role.ADMIN));
+        User user1 = new User(1l, "Mahi", "Mahi", List.of(Role.ADMIN));
+        User user2 = new User(2l, "Test", "Test", List.of(Role.ADMIN));
 
         ArrayList<User> userList = new ArrayList<>();
         userList.add(user1);
@@ -56,7 +56,7 @@ class UserServiceTest {
     void shouldAddUser() {
         when(passwordEncoder.encode(Mockito.<CharSequence>any())).thenReturn("secret");
 
-        User user = new User(1l,"Mahi","Mahi",List.of(Role.ADMIN));
+        User user = new User(1l, "Mahi", "Mahi", List.of(Role.ADMIN));
         when(userRepository.save(Mockito.<User>any())).thenReturn(user);
         long actualAddUserResult = userService.addUser(user);
 
@@ -69,7 +69,7 @@ class UserServiceTest {
     @Test
     public void shouldFindUserById() throws ChangeSetPersister.NotFoundException {
 
-        User user = new User(1l,"Mahi","Mahi",List.of(Role.ADMIN));
+        User user = new User(1l, "Mahi", "Mahi", List.of(Role.ADMIN));
         when(userRepository.findById(1l)).thenReturn(Optional.of(user));
 
         GetUserResponse actualUser = userService.findUserById(1l);
@@ -77,6 +77,7 @@ class UserServiceTest {
         verify(userRepository).findById(1l);
         assertFalse(actualUser.getRoles().isEmpty());
     }
+
     @Test
     public void shouldFindUserByIdThrowsException() throws Exception {
 
@@ -92,7 +93,7 @@ class UserServiceTest {
 
         when(passwordEncoder.encode(Mockito.<CharSequence>any())).thenReturn("secret");
 
-        User user = new User(1l,"Mahi","Mahi",List.of(Role.ADMIN));
+        User user = new User(1l, "Mahi", "Mahi", List.of(Role.ADMIN));
         when(userRepository.save(Mockito.<User>any())).thenReturn(user);
         long actualUpdateUserResult = userService.updateUser(user);
 
@@ -104,7 +105,7 @@ class UserServiceTest {
 
     @Test
     public void shouldLoadUserByUsername() throws UsernameNotFoundException {
-        User user = new User(1l,"Mahi","Mahi",List.of(Role.ADMIN));
+        User user = new User(1l, "Mahi", "Mahi", List.of(Role.ADMIN));
         when(userRepository.findByUsername("Mahi")).thenReturn(Optional.of(user));
 
         User actualUser = userService.loadUserByUsername("Mahi");
@@ -124,18 +125,44 @@ class UserServiceTest {
 
 
     @Test
-    public void shouldDeleteUser()  {
+    public void shouldDeleteUser() {
         doNothing().when(userRepository).deleteById(Mockito.<Long>any());
         userService.deleteUser(1L);
         verify(userRepository).deleteById(eq(1L));
         assertTrue(userService.findAllUser().isEmpty());
     }
+
     @Test
-   public void shouldReturnExistsUser() {
+    public void shouldReturnExistsUser() {
         when(userRepository.existsByUsername(Mockito.<String>any())).thenReturn(true);
         boolean actualExistsUserResult = userService.existsUser("Mahi");
         verify(userRepository).existsByUsername(eq("Mahi"));
         assertTrue(actualExistsUserResult);
+    }
+
+    @Test
+    public void shouldDeleteAllUsers() {
+        doNothing().when(userRepository).deleteAll();
+        userService.deleteAllUsers();
+        verify(userRepository).deleteAll();
+    }
+
+    @Test
+    public void shouldFindUserByName() {
+        User user = new User(1l, "Mahi", "Mahi", List.of(Role.ADMIN));
+        Optional<User> ofResult = Optional.of(user);
+        when(userRepository.findByUsername(Mockito.<String>any())).thenReturn(ofResult);
+
+        Optional<User> actualFindUserByNameResult = userService.findUserByName("Mahi");
+        verify(userRepository).findByUsername(eq("Mahi"));
+        assertSame(ofResult, actualFindUserByNameResult);
+    }
+
+    @Test
+    public void shouldFindUserByUsernameThrowsException() {
+        when(userRepository.findByUsername(Mockito.<String>any())).thenThrow(new UsernameNotFoundException("UserName not found"));
+        assertThrows(UsernameNotFoundException.class, () -> userService.findUserByName("Mahi"));
+        verify(userRepository).findByUsername(eq("Mahi"));
     }
 
 }

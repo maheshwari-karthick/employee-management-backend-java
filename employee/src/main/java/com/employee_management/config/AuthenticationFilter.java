@@ -77,7 +77,11 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
                 Map<String, Object> failureResponse = new HashMap<>();
                 failureResponse.put("status", HttpStatus.UNAUTHORIZED.value());
-                failureResponse.put("message", "Authentication failed");
+                failureResponse.put("message", "Authentication failed. Reason: " + e.getMessage());
+
+                PrintWriter out = response.getWriter();
+                out.print(new ObjectMapper().writeValueAsString(failureResponse));
+                out.flush();
                 return;
             }
 

@@ -31,10 +31,12 @@ public class UserController {
     @PostMapping("/user")
     public ResponseEntity<String> addUser(@Valid @RequestBody CreateUserRequest createUserRequest, BindingResult result) {
         if (result.hasErrors()) {
+            log.error("BindingError:"+ result.getAllErrors());
             return new ResponseEntity<>(result.getAllErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
         log.info("Add User : " + createUserRequest.toString());
         if (userService.existsUser(createUserRequest.getUserName())) {
+            log.error("User already exists");
             return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
         }
         long userId = userService.addUser(createUserRequest.toUser());
@@ -51,16 +53,19 @@ public class UserController {
     @PutMapping("/user")
     public ResponseEntity<String> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest, BindingResult result) {
         if (result.hasErrors()) {
+            log.error("Binding Error:"+ result.getAllErrors());
             return new ResponseEntity<>(result.getAllErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
         if (userService.existsUser(updateUserRequest.getUserName())) {
             Optional<User> user = userService.findUserByName(updateUserRequest.getUserName());
             if (user.isPresent() && user.get().getId() != updateUserRequest.getId()) {
+                log.error("User already exists");
                 return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
             }
         }
         log.info("Update User : " + updateUserRequest.toString());
         long userId = userService.updateUser(updateUserRequest.toUser());
+        log.info("User got updated : " + userId);
         return new ResponseEntity<>("User got Updated : " + userId, HttpStatus.OK);
     }
 
@@ -71,5 +76,13 @@ public class UserController {
         userService.deleteUser(userId);
         return new ResponseEntity<>("User got Deleted : " + userId, HttpStatus.OK);
     }
+
+    @DeleteMapping("/user/all")
+    public ResponseEntity<String> deleteAllUsers() {
+        log.info("Delete All Users");
+        userService.deleteAllUsers();
+        return new ResponseEntity<>("All the users are deleted",HttpStatus.OK);
+    }
+
 
 }
