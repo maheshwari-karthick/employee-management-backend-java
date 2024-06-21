@@ -31,7 +31,7 @@ public class UserController {
     @PostMapping("/user")
     public ResponseEntity<String> addUser(@Valid @RequestBody CreateUserRequest createUserRequest, BindingResult result) {
         if (result.hasErrors()) {
-            log.error("BindingError:"+ result.getAllErrors());
+            log.error("BindingError:" + result.getAllErrors());
             return new ResponseEntity<>(result.getAllErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
         log.info("Add User : " + createUserRequest.toString());
@@ -53,7 +53,7 @@ public class UserController {
     @PutMapping("/user")
     public ResponseEntity<String> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest, BindingResult result) {
         if (result.hasErrors()) {
-            log.error("Binding Error:"+ result.getAllErrors());
+            log.error("Binding Error:" + result.getAllErrors());
             return new ResponseEntity<>(result.getAllErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
         if (userService.existsUser(updateUserRequest.getUserName())) {
@@ -81,7 +81,7 @@ public class UserController {
     public ResponseEntity<String> deleteAllUsers() {
         log.info("Delete All Users");
         userService.deleteAllUsers();
-        return new ResponseEntity<>("All the users are deleted",HttpStatus.OK);
+        return new ResponseEntity<>("All the users are deleted", HttpStatus.OK);
     }
 
 

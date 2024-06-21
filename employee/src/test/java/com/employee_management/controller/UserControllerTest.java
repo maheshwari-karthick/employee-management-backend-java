@@ -40,7 +40,7 @@ class UserControllerTest {
         when(userService.existsUser(Mockito.<String>any())).thenReturn(false);
         when(userService.addUser(Mockito.<User>any())).thenReturn(1L);
 
-        CreateUserRequest createUserRequest = new CreateUserRequest("Mahi","Mahi", List.of(Role.ADMIN));
+        CreateUserRequest createUserRequest = new CreateUserRequest("Mahi", "Mahi", List.of(Role.ADMIN));
 
         String content = (new ObjectMapper()).writeValueAsString(createUserRequest);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user")
@@ -54,12 +54,13 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
                 .andExpect(MockMvcResultMatchers.content().string("new User got created : 1"));
     }
+
     @Test
     public void shouldNotAddUser() throws Exception {
         when(userService.existsUser(Mockito.<String>any())).thenReturn(true);
         when(userService.addUser(Mockito.<User>any())).thenReturn(1L);
 
-        CreateUserRequest createUserRequest = new CreateUserRequest("Mahi","Mahi", List.of(Role.ADMIN));
+        CreateUserRequest createUserRequest = new CreateUserRequest("Mahi", "Mahi", List.of(Role.ADMIN));
 
         String content = (new ObjectMapper()).writeValueAsString(createUserRequest);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user")
@@ -73,12 +74,13 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
                 .andExpect(MockMvcResultMatchers.content().string("User already exists"));
     }
+
     @Test
     public void shouldAddUserTrowsException() throws Exception {
         when(userService.existsUser(Mockito.<String>any())).thenReturn(false);
         when(userService.addUser(Mockito.<User>any())).thenReturn(1L);
 
-        CreateUserRequest createUserRequest = new CreateUserRequest("Mahi","", List.of(Role.ADMIN));
+        CreateUserRequest createUserRequest = new CreateUserRequest("Mahi", "", List.of(Role.ADMIN));
 
         String content = (new ObjectMapper()).writeValueAsString(createUserRequest);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user")
@@ -94,10 +96,10 @@ class UserControllerTest {
     }
 
     @Test
-   public void shouldUpdateUser() throws Exception {
+    public void shouldUpdateUser() throws Exception {
         when(userService.updateUser(Mockito.<User>any())).thenReturn(1L);
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest(1l,"Mahi","Mahi", List.of(Role.ADMIN));
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest(1l, "Mahi", "Mahi", List.of(Role.ADMIN));
 
         String content = (new ObjectMapper()).writeValueAsString(updateUserRequest);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/user")
@@ -111,15 +113,16 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
                 .andExpect(MockMvcResultMatchers.content().string("User got Updated : 1"));
     }
+
     @Test
     public void shouldUpdateUserThrowsException() throws Exception {
-        User user = new User(2l,"Mahi","Mahi", List.of(Role.ADMIN));
+        User user = new User(2l, "Mahi", "Mahi", List.of(Role.ADMIN));
         Optional<User> ofResult = Optional.of(user);
         when(userService.findUserByName(Mockito.<String>any())).thenReturn(ofResult);
         when(userService.existsUser(Mockito.<String>any())).thenReturn(true);
         when(userService.updateUser(Mockito.<User>any())).thenReturn(1L);
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest(1l,"Mahi","Mahi", List.of(Role.ADMIN));
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest(1l, "Mahi", "Mahi", List.of(Role.ADMIN));
 
         String content = (new ObjectMapper()).writeValueAsString(updateUserRequest);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/user")
@@ -132,16 +135,17 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
                 .andExpect(MockMvcResultMatchers.content().string("User already exists"));
     }
+
     @Test
     public void shouldUpdateUserThrowsException2() throws Exception {
-        User user = new User(2l,"Mahi","Mahi", List.of(Role.ADMIN));
+        User user = new User(2l, "Mahi", "Mahi", List.of(Role.ADMIN));
 
         Optional<User> ofResult = Optional.of(user);
         when(userService.findUserByName(Mockito.<String>any())).thenReturn(ofResult);
         when(userService.existsUser(Mockito.<String>any())).thenReturn(true);
         when(userService.updateUser(Mockito.<User>any())).thenReturn(1L);
 
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest(2l,"Mahi","", List.of(Role.ADMIN));
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest(2l, "Mahi", "", List.of(Role.ADMIN));
         String content = (new ObjectMapper()).writeValueAsString(updateUserRequest);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/user")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -197,6 +201,7 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string("{\"id\":0,\"username\":null,\"roles\":null}"));
     }
+
     @Test
     public void shouldDeleteAllUsers() throws Exception {
         doNothing().when(userService).deleteAllUsers();

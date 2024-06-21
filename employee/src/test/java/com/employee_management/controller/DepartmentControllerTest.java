@@ -87,6 +87,7 @@ class DepartmentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
                 .andExpect(MockMvcResultMatchers.content().string("Department added successfully.DepartmentId : 1"));
     }
+
     @Test
     public void shouldAddDepartment() throws Exception {
         when(departmentService.existsDepartmentByName(Mockito.<String>any())).thenReturn(true);
@@ -129,6 +130,7 @@ class DepartmentControllerTest {
                 andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
                 .andExpect(MockMvcResultMatchers.content().string("Department updated successfully.DepartmentId : 1"));
     }
+
     @Test
     public void shouldUpdateDepartmentThrowsException() throws Exception {
         Department department = new Department(1l, "IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
@@ -206,6 +208,7 @@ class DepartmentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
                 .andExpect(MockMvcResultMatchers.content().string("Exists Department By Name List Before Adding"));
     }
+
     @Test
     public void shouldAddDepartmentList() throws Exception {
         doNothing().when(departmentService).addDepartmentList(Mockito.<List<AddDepartmentRequest>>any());
@@ -229,8 +232,9 @@ class DepartmentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
                 .andExpect(MockMvcResultMatchers.content().string("DepartmentList Added"));
     }
+
     @Test
-   public void shouldNotUpdateDepartmentList() throws Exception {
+    public void shouldNotUpdateDepartmentList() throws Exception {
         when(departmentService.existsDepartmentByNameListBeforeUpdating(Mockito.<List<UpdateDepartmentRequest>>any()))
                 .thenReturn("Exists Department By Name List Before Updating");
         UpdateDepartmentRequest updateDepartmentRequest = new UpdateDepartmentRequest(2l, "IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
@@ -250,6 +254,7 @@ class DepartmentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
                 .andExpect(MockMvcResultMatchers.content().string("Exists Department By Name List Before Updating"));
     }
+
     @Test
     public void shouldUpdateDepartmentList() throws Exception {
         doNothing().when(departmentService).updateDepartmentList(Mockito.<List<UpdateDepartmentRequest>>any());
@@ -274,18 +279,20 @@ class DepartmentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
                 .andExpect(MockMvcResultMatchers.content().string("DepartmentList Updated"));
     }
+
     @Test
     public void shouldDeleteAllDepartmentList() throws Exception {
-            doNothing().when(departmentService).deleteAllDepartments();
-            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/department/all");
+        doNothing().when(departmentService).deleteAllDepartments();
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/department/all");
 
-            MockMvcBuilders.standaloneSetup(departmentController)
-                    .build()
-                    .perform(requestBuilder)
-                    .andExpect(MockMvcResultMatchers.status().isOk())
-                    .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                    .andExpect(MockMvcResultMatchers.content().string("All Departments are deleted"));
-        }
+        MockMvcBuilders.standaloneSetup(departmentController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
+                .andExpect(MockMvcResultMatchers.content().string("All Departments are deleted"));
+    }
+
     @Test
     public void shouldDeleteDepartmentByBatchId() throws Exception {
         MockHttpServletRequestBuilder contentTypeResult = MockMvcRequestBuilders.delete("/departments")

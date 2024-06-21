@@ -93,7 +93,7 @@ public class DepartmentService {
         departmentRepository.deleteAllByIdInBatch(departmentIds);
     }
 
-    public void deleteAllDepartments(){
+    public void deleteAllDepartments() {
         departmentRepository.deleteAll();
     }
 }

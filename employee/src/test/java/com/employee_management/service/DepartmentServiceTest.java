@@ -63,7 +63,7 @@ class DepartmentServiceTest {
     }
 
     @Test
-   public void shouldAddDepartment() {
+    public void shouldAddDepartment() {
         Department department = new Department(1l, "IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
 
         when(departmentRepository.save(Mockito.<Department>any())).thenReturn(department);
@@ -93,6 +93,7 @@ class DepartmentServiceTest {
         verify(departmentRepository).deleteById(eq(1L));
         assertTrue(departmentService.getAllDepartments().isEmpty());
     }
+
     @Test
     public void shouldGetExistsDepartmentByName() {
         when(departmentRepository.existsByDepartmentName(Mockito.<String>any())).thenReturn(true);
@@ -100,8 +101,9 @@ class DepartmentServiceTest {
         verify(departmentRepository).existsByDepartmentName(eq("IT"));
         assertTrue(actualExistsDepartmentByNameResult);
     }
+
     @Test
-   public void shouldGetDepartmentByName() {
+    public void shouldGetDepartmentByName() {
         Department department = new Department(1l, "IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
 
         Optional<Department> ofResult = Optional.of(department);
@@ -111,6 +113,7 @@ class DepartmentServiceTest {
         verify(departmentRepository).findByDepartmentName(eq("IT"));
         assertSame(ofResult, actualDepartmentByName);
     }
+
     @Test
     public void shouldExistsDepartmentById() {
         when(departmentRepository.existsById(Mockito.<Long>any())).thenReturn(false);
@@ -118,12 +121,14 @@ class DepartmentServiceTest {
         verify(departmentRepository).existsById(eq(1L));
         assertTrue(actualExistsDepartmentByIdResult);
     }
+
     @Test
     public void shouldDeleteAllDepartments() {
         doNothing().when(departmentRepository).deleteAll();
         departmentService.deleteAllDepartments();
         verify(departmentRepository).deleteAll();
     }
+
     @Test
     public void shouldDeleteAllByIdInBatch() throws Exception {
         doNothing().when(departmentRepository).deleteAllByIdInBatch(Mockito.<Iterable<Long>>any());

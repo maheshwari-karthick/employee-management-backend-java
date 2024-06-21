@@ -154,6 +154,7 @@ class EmployeeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("Employee with id 1 updated"));
 
     }
+
     @Test
     public void shouldUpdateEmployeeThrowsException() throws Exception {
 
@@ -301,7 +302,7 @@ class EmployeeControllerTest {
     }
 
     @Test
-   public void shouldAddEmployeeList() throws Exception {
+    public void shouldAddEmployeeList() throws Exception {
 
         doNothing().when(employeeService).addEmployeeList(Mockito.<List<AddEmployeeRequest>>any());
         when(employeeService.validateEmployeesBeforeAdding(Mockito.<List<AddEmployeeRequest>>any())).thenReturn("");

@@ -210,6 +210,7 @@ class EmployeeServiceTest {
         verify(departmentRepository).findById(eq(1L));
         assertEquals("", actualValidateEmployeesBeforeUpdatingResult);
     }
+
     @Test
     public void testValidateEmployeesBeforeUpdating2() {
         Optional<Department> emptyResult = Optional.empty();
@@ -229,6 +230,7 @@ class EmployeeServiceTest {
         verify(departmentRepository).findById(eq(1L));
         assertEquals("For Employee Mahi department 1 is not present\r\n", actualValidateEmployeesBeforeUpdatingResult);
     }
+
     @Test
     public void shouldUpdateEmployeeList() {
         when(employeeRepository.saveAll(Mockito.<Iterable<Employee>>any())).thenReturn(new ArrayList<>());
@@ -244,6 +246,7 @@ class EmployeeServiceTest {
 
         verify(employeeRepository).saveAll(isA(Iterable.class));
     }
+
     @Test
     public void shouldDeleteAllEmployees() {
         doNothing().when(employeeRepository).deleteAll();

@@ -97,7 +97,7 @@ public class EmployeeController {
     @DeleteMapping("/employees")
     public ResponseEntity<String> deleteEmployees(@RequestBody List<Long> employeeIds) throws Exception {
         log.info("Delete Employees : " + employeeIds.toString());
-        if(employeeIds.isEmpty()) {
+        if (employeeIds.isEmpty()) {
             log.info("Employee Ids are empty");
             return new ResponseEntity<>("Employee Ids are empty", HttpStatus.CONFLICT);
         }
