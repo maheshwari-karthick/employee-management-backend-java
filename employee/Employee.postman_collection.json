@@ -1,0 +1,295 @@
+{
+	"info": {
+		"_postman_id": "3e79c0d0-c544-4975-9d3f-58a6168174ab",
+		"name": "Employee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "36369365"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/employee",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg5NDczMCwiZXhwIjoxNzE5NzU4NzMwfQ.U3htnsK65DhEjRMr50GJXP1RhocwQEn2HfLg72Mt7fa5dMc8dUiywjSw7V09AWjS1QK1S33vsOnr2aEQM2Olxw"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {     \"firstName\":\"Test\",\r\n        \"lastName\":\"Karthick\",\r\n        \"email\":\"mahi@gmail.com\",\r\n        \"phone\":\"3435465743\",\r\n        \"gender\":\"FEMALE\",\r\n        \"age\":9,\r\n        \"salary\":\"2323\",\r\n        \"role\":\"ADMIN\",\r\n        \"address\":\"Chennai\",\r\n        \"departmentId\":\"352\"\r\n    }\r\n \r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/employee"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/employee",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+					}
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {  \r\n    \"id\":\"555\",\r\n    \"firstName\":\"Test\",\r\n        \"lastName\":\"Test\",\r\n        \"email\":\"mahi@gmail.com\",\r\n        \"phone\":\"3435465743\",\r\n        \"gender\":\"FEMALE\",\r\n        \"age\":9,\r\n        \"salary\":\"2323\",\r\n        \"role\":\"ADMIN\",\r\n        \"address\":\"Chennai\",\r\n        \"departmentId\":\"52\"\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/employee"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/employee/all",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {     \"id\":3,\r\n        \"userName\":\"Test1\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": []\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/employee/all"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/employee/1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {     \"id\":3,\r\n        \"userName\":\"Test1\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": []\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/employee/408"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/employee/90",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+					}
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {     \"id\":3,\r\n        \"userName\":\"Test1\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": []\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/employee/408"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/employees",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+					}
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " [ {     \r\n    \"id\":\"22\",\r\n    \"firstName\":\"Test1m\",\r\n        \"lastName\":\"Test\",\r\n        \"email\":\"mahi@gmail.com\",\r\n        \"phone\":\"3435465743\",\r\n        \"gender\":\"MALE\",\r\n        \"age\":9,\r\n        \"salary\":\"2323\",\r\n        \"role\":\"ADMIN\",\r\n        \"address\":\"Chennai\",\r\n        \"departmentId\":\"102\"\r\n    },\r\n      {  \r\n        \"id\":\"90\",\r\n        \"firstName\":\"Test2m\",\r\n        \"lastName\":\"Test\",\r\n        \"email\":\"mahi@gmail.com\",\r\n        \"phone\":\"3435465743\",\r\n        \"gender\":\"FEMALE\",\r\n        \"age\":9,\r\n        \"salary\":\"2323\",\r\n        \"role\":\"ADMIN\",\r\n        \"address\":\"Chennai\",\r\n        \"departmentId\":\"102\"\r\n    }\r\n ]\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/employees"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/employees",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " [ {     \"firstName\":\"Test1m\",\r\n        \"lastName\":\"Test\",\r\n        \"email\":\"mahi@gmail.com\",\r\n        \"phone\":\"3435465743\",\r\n        \"gender\":\"MALE\",\r\n        \"age\":9,\r\n        \"salary\":\"2323\",\r\n        \"role\":\"ADMIN\",\r\n        \"address\":\"Chennai\",\r\n        \"departmentId\":\"102\"\r\n    },\r\n      {  \"firstName\":\"Test2m\",\r\n        \"lastName\":\"Test\",\r\n        \"email\":\"mahi@gmail.com\",\r\n        \"phone\":\"3435465743\",\r\n        \"gender\":\"FEMALE\",\r\n        \"age\":9,\r\n        \"salary\":\"2323\",\r\n        \"role\":\"ADMIN\",\r\n        \"address\":\"Chennai\",\r\n        \"departmentId\":\"102\"\r\n    }\r\n ]\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/employees"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/employees",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+					}
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[56,676,4,345,3,34]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/employees"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/employee/all",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+					}
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[56,676,4,345,3,34]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/employee/all"
+			},
+			"response": []
+		}
+	]
+}
