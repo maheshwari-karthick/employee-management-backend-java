@@ -7,7 +7,6 @@ import com.employee_management.response.GetUserResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -24,7 +23,6 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 class UserServiceTest {
     @MockBean
     private PasswordEncoder passwordEncoder;
