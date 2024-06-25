@@ -4,7 +4,7 @@ import com.employee_management.Request.AddDepartmentRequest;
 import com.employee_management.Request.UpdateDepartmentRequest;
 import com.employee_management.model.Department;
 import com.employee_management.repository.DepartmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class DepartmentService {
 
-    @Autowired
-    private DepartmentRepository departmentRepository;
+    private final DepartmentRepository departmentRepository;
 
     public List<Department> getAllDepartments() {
         return departmentRepository.findAll();

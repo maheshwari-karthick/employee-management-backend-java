@@ -2,13 +2,11 @@ package com.employee_management.response;
 
 import com.employee_management.model.Role;
 import com.employee_management.model.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class GetUserResponse {
     private long id;
     private String username;

@@ -6,9 +6,9 @@ import com.employee_management.model.Employee;
 import com.employee_management.service.DepartmentService;
 import com.employee_management.service.EmployeeService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,13 +19,11 @@ import java.util.Objects;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class EmployeeController {
 
-    @Autowired
-    private EmployeeService employeeService;
-
-    @Autowired
-    private DepartmentService departmentService;
+    private final EmployeeService employeeService;
+    private final DepartmentService departmentService;
 
     @GetMapping("/employee/all")
     public ResponseEntity<List<Employee>> getAllEmployees() {

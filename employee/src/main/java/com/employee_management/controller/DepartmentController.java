@@ -5,9 +5,9 @@ import com.employee_management.Request.UpdateDepartmentRequest;
 import com.employee_management.model.Department;
 import com.employee_management.service.DepartmentService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,10 +19,10 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class DepartmentController {
 
-    @Autowired
-    private DepartmentService departmentService;
+    private final DepartmentService departmentService;
 
     @GetMapping("/department/all")
     public ResponseEntity<List<Department>> getAllDepartments() {

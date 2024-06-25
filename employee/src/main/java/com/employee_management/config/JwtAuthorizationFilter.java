@@ -22,7 +22,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.thymeleaf.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.Date;
@@ -42,13 +42,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     UserService userService;
 
+
     public JwtAuthorizationFilter(String pathPattern, String secretKey) {
         this.pathPattern = pathPattern;
         this.secretKey = secretKey;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain)
             throws IOException, ServletException {
@@ -63,7 +64,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        if (StringUtils.isEmptyOrWhitespace(authorizationHeader)) {
+        if (StringUtils.isBlank(authorizationHeader)) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.getWriter().write("Unauthorized");
             return;
@@ -109,7 +110,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     }
 
-    private boolean validateToken(String token, UserDetails userDetails) {
+    private boolean validateToken(String token, @NonNull UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }

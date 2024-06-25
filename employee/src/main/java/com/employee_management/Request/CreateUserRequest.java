@@ -7,11 +7,9 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class CreateUserRequest {
 
     @NotBlank(message = "userName should not be blank.")
@@ -27,14 +25,5 @@ public class CreateUserRequest {
                 .password(password)
                 .roles(roles)
                 .build();
-    }
-
-    @Override
-    public String toString() {
-        return "CreateUserRequest{" +
-                "userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
-                '}';
     }
 }

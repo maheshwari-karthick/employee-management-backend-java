@@ -40,7 +40,6 @@ public class SecurityConfiguration {
 
     @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
-        // Provide your JwtAuthorizationFilter bean implementation here
         return new JwtAuthorizationFilter("", secretKey);
     }
 

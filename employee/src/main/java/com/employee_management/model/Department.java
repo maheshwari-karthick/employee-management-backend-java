@@ -3,10 +3,8 @@ package com.employee_management.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "DEPARTMENT")
-@Getter
-@Setter
+@Entity(name = "DEPARTMENT")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -23,18 +21,4 @@ public class Department {
     private String organizationName;
     private String organizationAddress;
     private String departmentHead;
-
-
-    @Override
-    public String toString() {
-        return "Department{" +
-                "id=" + id +
-                ", departmentName='" + departmentName + '\'' +
-                ", departmentPhone='" + departmentPhone + '\'' +
-                ", departmentEmail='" + departmentEmail + '\'' +
-                ", organizationName='" + organizationName + '\'' +
-                ", organizationAddress='" + organizationAddress + '\'' +
-                ", departmentHead='" + departmentHead + '\'' +
-                '}';
-    }
 }

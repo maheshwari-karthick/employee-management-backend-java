@@ -6,10 +6,9 @@ import com.employee_management.model.Role;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class AddEmployeeRequest {
 
     @NotBlank(message = "firstName should  not be blank.")
@@ -41,22 +40,4 @@ public class AddEmployeeRequest {
                 .departmentId(departmentId)
                 .build();
     }
-
-    @Override
-    public String toString() {
-        return "AddEmployeeRequest{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", gender='" + gender + '\'' +
-                ", age='" + age + '\'' +
-                ", salary='" + salary + '\'' +
-                ", role='" + role + '\'' +
-                ", address='" + address + '\'' +
-                ", departmentId='" + departmentId + '\'' +
-                '}';
-    }
-
-
 }

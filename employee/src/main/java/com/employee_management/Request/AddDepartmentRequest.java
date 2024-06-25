@@ -4,10 +4,9 @@ import com.employee_management.model.Department;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class AddDepartmentRequest {
 
     @NotBlank(message = "departmentName should not be blank.")
@@ -28,17 +27,5 @@ public class AddDepartmentRequest {
                 .organizationAddress(organizationAddress)
                 .departmentHead(departmentHead)
                 .build();
-    }
-
-    @Override
-    public String toString() {
-        return "AddDepartmentRequest{" +
-                "departmentName='" + departmentName + '\'' +
-                ", departmentPhone='" + departmentPhone + '\'' +
-                ", departmentEmail='" + departmentEmail + '\'' +
-                ", organizationName='" + organizationName + '\'' +
-                ", organizationAddress='" + organizationAddress + '\'' +
-                ", departmentHead='" + departmentHead + '\'' +
-                '}';
     }
 }

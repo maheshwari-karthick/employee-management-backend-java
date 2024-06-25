@@ -6,8 +6,8 @@ import com.employee_management.model.Department;
 import com.employee_management.model.Employee;
 import com.employee_management.repository.DepartmentRepository;
 import com.employee_management.repository.EmployeeRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +17,11 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class EmployeeService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
-
-    @Autowired
-    private DepartmentRepository departmentRepository;
+    private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
 
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();

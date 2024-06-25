@@ -6,8 +6,7 @@ import com.employee_management.model.Role;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateEmployeeRequest {
@@ -42,22 +41,5 @@ public class UpdateEmployeeRequest {
                 .address(address)
                 .departmentId(departmentId)
                 .build();
-    }
-
-    @Override
-    public String toString() {
-        return "UpdateEmployeeRequest{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", gender=" + gender +
-                ", age=" + age +
-                ", salary=" + salary +
-                ", role=" + role +
-                ", address='" + address + '\'' +
-                ", departmentId=" + departmentId +
-                '}';
     }
 }

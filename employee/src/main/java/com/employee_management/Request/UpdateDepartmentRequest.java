@@ -4,8 +4,7 @@ import com.employee_management.model.Department;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateDepartmentRequest {

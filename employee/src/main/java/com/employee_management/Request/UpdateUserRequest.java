@@ -7,8 +7,7 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateUserRequest {
@@ -29,15 +28,5 @@ public class UpdateUserRequest {
                 .password(password)
                 .roles(roles)
                 .build();
-    }
-
-    @Override
-    public String toString() {
-        return "UpdateUserRequest{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
-                '}';
     }
 }
