@@ -1,5 +1,7 @@
 package com.employee_management.service;
 
+import com.employee_management.Request.AddDepartmentRequest;
+import com.employee_management.Request.UpdateDepartmentRequest;
 import com.employee_management.model.Department;
 import com.employee_management.repository.DepartmentRepository;
 import org.junit.jupiter.api.Test;
@@ -134,6 +136,79 @@ class DepartmentServiceTest {
         doNothing().when(departmentRepository).deleteAllByIdInBatch(Mockito.<Iterable<Long>>any());
         departmentService.deleteAllDepartmentsByIdInBatch(new ArrayList<>());
         assertTrue(departmentService.getAllDepartments().isEmpty());
+    }
+
+    @Test
+    public void shouldExistsDepartmentByNameListBeforeAddingReturnsAlreadyPresent() {
+        when(departmentRepository.existsByDepartmentName(Mockito.<String>any())).thenReturn(true);
+        ArrayList<String> names = new ArrayList<>();
+        names.add("Mahi");
+        String actualExistsDepartmentByNameListBeforeAddingResult = departmentService
+                .existsDepartmentByNameListBeforeAdding(names);
+        verify(departmentRepository).existsByDepartmentName(eq("Mahi"));
+        assertEquals("Department Name Mahi already present.\r\n", actualExistsDepartmentByNameListBeforeAddingResult);
+    }
+
+    @Test
+    public void shouldExistsDepartmentByNameListBeforeAdding() {
+        when(departmentRepository.existsByDepartmentName(Mockito.<String>any())).thenReturn(false);
+        ArrayList<String> names = new ArrayList<>();
+        names.add("Mahi");
+        String actualExistsDepartmentByNameListBeforeAddingResult = departmentService
+                .existsDepartmentByNameListBeforeAdding(names);
+        verify(departmentRepository).existsByDepartmentName(eq("Mahi"));
+        assertEquals("", actualExistsDepartmentByNameListBeforeAddingResult);
+    }
+
+    @Test
+    public void shouldExistsDepartmentByNameListBeforeUpdatingReturnsAlreadyPresent() {
+        Department department = new Department(1L, "IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
+        Optional<Department> ofResult = Optional.of(department);
+        when(departmentRepository.findByDepartmentName(Mockito.<String>any())).thenReturn(ofResult);
+        UpdateDepartmentRequest updateDepartmentRequest = new UpdateDepartmentRequest(2L, "IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
+
+        ArrayList<UpdateDepartmentRequest> updateDepartmentRequestList = new ArrayList<>();
+        updateDepartmentRequestList.add(updateDepartmentRequest);
+
+        String actualExistsDepartmentByNameListBeforeUpdatingResult = departmentService
+                .existsDepartmentByNameListBeforeUpdating(updateDepartmentRequestList);
+
+        assertEquals("Department Name IT already present.\r\n",
+                actualExistsDepartmentByNameListBeforeUpdatingResult);
+    }
+
+    @Test
+    public void shouldExistsDepartmentByNameListBeforeUpdating() {
+        Department department = new Department(1L, "IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
+        Optional<Department> ofResult = Optional.of(department);
+        when(departmentRepository.findByDepartmentName(Mockito.<String>any())).thenReturn(ofResult);
+        UpdateDepartmentRequest updateDepartmentRequest = new UpdateDepartmentRequest(1L, "IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
+
+        ArrayList<UpdateDepartmentRequest> updateDepartmentRequestList = new ArrayList<>();
+        updateDepartmentRequestList.add(updateDepartmentRequest);
+
+        String actualExistsDepartmentByNameListBeforeUpdatingResult = departmentService
+                .existsDepartmentByNameListBeforeUpdating(updateDepartmentRequestList);
+
+        assertEquals("", actualExistsDepartmentByNameListBeforeUpdatingResult);
+    }
+
+    @Test
+    public void shouldAddDepartmentToDepartmentList() {
+        AddDepartmentRequest addDepartmentRequest = new AddDepartmentRequest("IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
+        List<AddDepartmentRequest> addDepartmentRequestList = new ArrayList<>();
+        addDepartmentRequestList.add(addDepartmentRequest);
+        departmentService.addDepartmentList(addDepartmentRequestList);
+        verify(departmentRepository).save(isA(Department.class));
+    }
+
+    @Test
+    public void shouldUpdateDepartmentList() {
+        UpdateDepartmentRequest updateDepartmentRequest = new UpdateDepartmentRequest(1L,"IT", "9825550144", "Mahi@example.org", "Google", "Chennai", "Mahi");
+        List<UpdateDepartmentRequest> updateDepartmentRequestList = new ArrayList<>();
+        updateDepartmentRequestList.add(updateDepartmentRequest);
+        departmentService.updateDepartmentList(updateDepartmentRequestList);
+        verify(departmentRepository).save(isA(Department.class));
     }
 
 }
