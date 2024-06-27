@@ -73,7 +73,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     out.flush();
                     return;
                 }
-            } catch (AuthenticationException e) {
+            } catch (Exception e) {
                 // Handle authentication failure (e.g., return 401 Unauthorized)
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json");
