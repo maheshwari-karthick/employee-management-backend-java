@@ -10,19 +10,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.Date;
@@ -39,6 +38,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             new AntPathRequestMatcher("/webjars/****"),
             new AntPathRequestMatcher("/v3/api-docs/**")
     );
+
     @Autowired
     UserService userService;
 
@@ -88,7 +88,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             UserDetails userDetails;
             try {
                 userDetails = userService.loadUserByUsername(username);
-            } catch (UsernameNotFoundException e) {
+            } catch (Exception e) {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 response.getWriter().write("Invalid JWT Token.");
                 return;
