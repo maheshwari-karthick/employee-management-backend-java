@@ -3,7 +3,9 @@ package com.employee_management.Request;
 import com.employee_management.model.Employee;
 import com.employee_management.model.Gender;
 import com.employee_management.model.Role;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Data
@@ -17,13 +19,19 @@ public class UpdateEmployeeRequest {
     private String firstName;
 
     private String lastName;
+
+    @Email(message = "email is invalid.")
     private String email;
+
+    @Pattern(regexp = "^\\d{10}$",message = "phone is invalid.")
     private String phone;
+
     private Gender gender;
     private Integer age;
     private Double salary;
     private Role role;
     private String address;
+
     @NonNull
     private Long departmentId;
 
