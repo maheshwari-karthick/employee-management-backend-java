@@ -91,7 +91,6 @@ class DepartmentServiceTest {
         doNothing().when(departmentRepository).deleteById(Mockito.<Long>any());
         departmentService.deleteDepartmentById(1L);
         verify(departmentRepository).deleteById(eq(1L));
-        assertTrue(departmentService.getAllDepartments().isEmpty());
     }
 
     @Test

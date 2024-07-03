@@ -6,7 +6,11 @@ import com.employee_management.model.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.*;
+import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
@@ -27,7 +31,11 @@ public class UpdateEmployeeRequest {
     private String phone;
 
     private Gender gender;
+
+    @Positive(message = "age should be positive.")
     private Integer age;
+
+    @Positive(message = "salary should be positive.")
     private Double salary;
     private Role role;
     private String address;

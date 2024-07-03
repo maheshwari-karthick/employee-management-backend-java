@@ -17,6 +17,7 @@ public class CreateUserRequest {
 
     @NotBlank(message = "password should not be blank.")
     private String password;
+
     private List<Role> roles;
 
     public User toUser() {

@@ -27,9 +27,7 @@ public class DepartmentController {
     @GetMapping("/department/all")
     public ResponseEntity<List<Department>> getAllDepartments() {
         log.info("Get all department list");
-
         List<Department> departments = departmentService.getAllDepartments();
-
         log.info("Department List: " + departments.toString());
         return new ResponseEntity<>(departments, HttpStatus.OK);
     }
