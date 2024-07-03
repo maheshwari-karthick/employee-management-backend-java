@@ -7,38 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:8080/user",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg5Mzc3NywiZXhwIjoxNzE5NzU3Nzc3fQ.7M43EfU4vnB71ABUReuwygpt6W3DGYZIs4z_cinZBrG0pOiBeYGYbtQx9-D9aiMDMi5zbLx-IqnDRlkYz-S51Q"
-					}
-				},
-				"method": "PUT",
-				"header": [
-					{
-						"key": "userId",
-						"value": "1",
-						"type": "default",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "  {     \"id\":12,\r\n        \"userName\":\"ADMIN\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": [\"ADMIN\"]\r\n    }\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:8080/user"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8080/authenticate",
+			"name": "Get Token",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -62,54 +31,47 @@
 						}
 					}
 				},
-				"url": "http://localhost:8080/authenticate"
+				"url": "http://localhost:8081/authenticate"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/user/all",
+			"name": "get all users",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg5NDczMCwiZXhwIjoxNzE5NzU4NzMwfQ.U3htnsK65DhEjRMr50GJXP1RhocwQEn2HfLg72Mt7fa5dMc8dUiywjSw7V09AWjS1QK1S33vsOnr2aEQM2Olxw"
+						"token": "{{token}}"
 					}
 				},
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:8080/user/all"
+				"url": "{{base_url}}user/all"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/user/3",
+			"name": "get user",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJNYWhpIiwiaWF0IjoxNzE4NjI3NzI1LCJleHAiOjE3MTk0OTE3MjV9.SyM-6YpaKF8L4nDfDVp4XipdnPEeIKVXrOD6ke5wHaPVIRSe9-_qI3EuYJpfSulFfMhnQ5T5u1pf4v0LgibWTQ"
+						"token": "{{token}}"
 					}
 				},
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "userId",
-						"value": "1",
-						"type": "default",
-						"disabled": true
-					}
-				],
-				"url": "http://localhost:8080/user/1"
+				"method": "GET",
+				"header": [],
+				"url": "{{base_url}}user/1"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/user",
+			"name": "save User",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg5NDczMCwiZXhwIjoxNzE5NzU4NzMwfQ.U3htnsK65DhEjRMr50GJXP1RhocwQEn2HfLg72Mt7fa5dMc8dUiywjSw7V09AWjS1QK1S33vsOnr2aEQM2Olxw"
+						"token": "{{token}}"
 					}
 				},
 				"method": "POST",
@@ -123,24 +85,55 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "  {   \r\n        \"userName\":\"Mahi\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": [\"ADMIN\"]\r\n    }\r\n",
+					"raw": "  {   \r\n        \"userName\":\"test\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": [\"USER\"]\r\n    }\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/user"
+				"url": "{{base_url}}user"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/user/3",
+			"name": "Update User",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJNYWhpIiwiaWF0IjoxNzE4NjI3NzI1LCJleHAiOjE3MTk0OTE3MjV9.SyM-6YpaKF8L4nDfDVp4XipdnPEeIKVXrOD6ke5wHaPVIRSe9-_qI3EuYJpfSulFfMhnQ5T5u1pf4v0LgibWTQ"
+						"token": "{{token}}"
+					}
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {     \"id\":2,\r\n        \"userName\":\"test\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": [\"USER\"]\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}user"
+			},
+			"response": []
+		},
+		{
+			"name": "delete User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
 					}
 				},
 				"method": "DELETE",
@@ -152,7 +145,29 @@
 						"disabled": true
 					}
 				],
-				"url": "http://localhost:8080/user/all"
+				"url": "{{base_url}}user/2"
+			},
+			"response": []
+		},
+		{
+			"name": "delete all users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": "{{base_url}}user/all"
 			},
 			"response": []
 		}

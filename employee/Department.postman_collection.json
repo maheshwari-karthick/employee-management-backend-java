@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:8080/department/all",
+			"name": "get all departments",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -15,7 +15,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "GET",
@@ -36,17 +36,51 @@
 						}
 					}
 				},
-				"url": "http://localhost:8080/department/all"
+				"url": "{{base_url}}department/all"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/department",
+			"name": "get department",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {     \"id\":3,\r\n        \"userName\":\"Test1\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": []\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}department/1"
+			},
+			"response": []
+		},
+		{
+			"name": "save department",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
 					}
 				},
 				"method": "POST",
@@ -60,24 +94,24 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "  {     \"departmentName\":\"\",\r\n        \"departmentPhone\":\"\",\r\n        \"departmentEmail\":\"Marketing@gmail.com\",\r\n        \"organizationName\":\"Google\",\r\n        \"organizationAddress\": \"Chennai\",\r\n        \"departmentHead\":\"Mahi\"\r\n    }\r\n",
+					"raw": "  {     \"departmentName\":\"IT\",\r\n        \"departmentPhone\":\"9698382178\",\r\n        \"departmentEmail\":\"IT@gmail.com\",\r\n        \"organizationName\":\"Google\",\r\n        \"organizationAddress\": \"Chennai\",\r\n        \"departmentHead\":\"Mahi\"\r\n    }\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/department"
+				"url": "{{base_url}}department"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/department",
+			"name": "Update Department",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "PUT",
@@ -91,58 +125,24 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "  { \"id\":301,\r\n    \"departmentName\":\"Sales1\",\r\n        \"departmentPhone\":\"\",\r\n        \"departmentEmail\":\"Sales@gmail.com\",\r\n        \"organizationName\":\"Google\",\r\n        \"organizationAddress\": \"Chennai\",\r\n        \"departmentHead\":\"\"\r\n    }\r\n",
+					"raw": "  { \"id\":2,\r\n    \"departmentName\":\"IT\",\r\n        \"departmentPhone\":\"9878787676\",\r\n        \"departmentEmail\":\"IT@gmail.com\",\r\n        \"organizationName\":\"Google\",\r\n        \"organizationAddress\": \"Chennai\",\r\n        \"departmentHead\":\"Mahi\"\r\n    }\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/department"
+				"url": "{{base_url}}department"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/department/1",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
+			"name": "delete department",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODY0NTQzNSwiZXhwIjoxNzE5NTA5NDM1fQ.ZyLluzL-xBkLehQgrBoJKO_axaC5TpY5KeHqY85UP4P6d0fLigVT8vJwg7yH8yexAUdOE6MHejdhSasTHfs5zg"
-					}
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "userId",
-						"value": "1",
-						"type": "default",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "  {     \"id\":3,\r\n        \"userName\":\"Test1\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": []\r\n    }\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:8080/department/234"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8080/department/3",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "DELETE",
@@ -163,17 +163,17 @@
 						}
 					}
 				},
-				"url": "http://localhost:8080/department/152"
+				"url": "{{base_url}}department/152"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/departments",
+			"name": "add list of departments",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "POST",
@@ -187,24 +187,24 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\r\n    {   \"departmentName\":\"CallCenter\",\r\n        \"departmentPhone\":\"\",\r\n        \"departmentEmail\":\"HR@gmail.com\",\r\n        \"organizationName\":\"Google\",\r\n        \"organizationAddress\": \"Chennai\",\r\n        \"departmentHead\":\"Mahi\"\r\n    },\r\n     {   \"departmentName\":\"CallCenter\",\r\n        \"departmentPhone\":\"\",\r\n        \"departmentEmail\":\"HR@gmail.com\",\r\n        \"organizationName\":\"Google\",\r\n        \"organizationAddress\": \"Chennai\",\r\n        \"departmentHead\":\"Mahi\"\r\n    }\r\n]",
+					"raw": "[\r\n    {   \"departmentName\":\"HR\",\r\n        \"departmentPhone\":\"9787676565\",\r\n        \"departmentEmail\":\"HR@gmail.com\",\r\n        \"organizationName\":\"Google\",\r\n        \"organizationAddress\": \"Chennai\",\r\n        \"departmentHead\":\"Mahi\"\r\n    },\r\n     {   \"departmentName\":\"Call Center\",\r\n        \"departmentPhone\":\"7876543456\",\r\n        \"departmentEmail\":\"Call@gmail.com\",\r\n        \"organizationName\":\"Google\",\r\n        \"organizationAddress\": \"Chennai\",\r\n        \"departmentHead\":\"Mahi\"\r\n    }\r\n]",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/departments"
+				"url": "{{base_url}}departments"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/departments",
+			"name": "Update list of departments",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "PUT",
@@ -225,17 +225,17 @@
 						}
 					}
 				},
-				"url": "http://localhost:8080/departments"
+				"url": "{{base_url}}departments"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/departments",
+			"name": "delete departments",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "DELETE",
@@ -249,24 +249,24 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[]",
+					"raw": "[3,5]",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/departments"
+				"url": "{{base_url}}departments"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/department/all",
+			"name": "delete all departments",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "DELETE",
@@ -280,14 +280,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[]",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/department/all"
+				"url": "{{base_url}}department/all"
 			},
 			"response": []
 		}

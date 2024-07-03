@@ -7,12 +7,80 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:8080/employee",
+			"name": "get employee",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg5NDczMCwiZXhwIjoxNzE5NzU4NzMwfQ.U3htnsK65DhEjRMr50GJXP1RhocwQEn2HfLg72Mt7fa5dMc8dUiywjSw7V09AWjS1QK1S33vsOnr2aEQM2Olxw"
+						"token": "{{token}}"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {     \"id\":3,\r\n        \"userName\":\"Test1\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": []\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}employee/1"
+			},
+			"response": []
+		},
+		{
+			"name": "get all employees",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "userId",
+						"value": "1",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {     \"id\":3,\r\n        \"userName\":\"Test1\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": []\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}employee/all"
+			},
+			"response": []
+		},
+		{
+			"name": "save employee",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{token}}"
 					}
 				},
 				"method": "POST",
@@ -26,24 +94,24 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": " {     \"firstName\":\"Test\",\r\n        \"lastName\":\"Karthick\",\r\n        \"email\":\"mahi@gmail.com\",\r\n        \"phone\":\"3435465743\",\r\n        \"gender\":\"FEMALE\",\r\n        \"age\":9,\r\n        \"salary\":\"2323\",\r\n        \"role\":\"ADMIN\",\r\n        \"address\":\"Chennai\",\r\n        \"departmentId\":\"352\"\r\n    }\r\n \r\n",
+					"raw": " {     \"firstName\":\"Test\",\r\n        \"lastName\":\"Karthick\",\r\n        \"email\":\"mahi@gmail.com\",\r\n        \"phone\":\"3435465743\",\r\n        \"gender\":\"FEMALE\",\r\n        \"age\":9,\r\n        \"salary\":\"2323\",\r\n        \"role\":\"ADMIN\",\r\n        \"address\":\"Chennai\",\r\n        \"departmentId\":\"2\"\r\n    }\r\n \r\n",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/employee"
+				"url": "{{base_url}}employee"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/employee",
+			"name": "update employee",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "PUT",
@@ -57,92 +125,24 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "  {  \r\n    \"id\":\"555\",\r\n    \"firstName\":\"Test\",\r\n        \"lastName\":\"Test\",\r\n        \"email\":\"mahi@gmail.com\",\r\n        \"phone\":\"3435465743\",\r\n        \"gender\":\"FEMALE\",\r\n        \"age\":9,\r\n        \"salary\":\"2323\",\r\n        \"role\":\"ADMIN\",\r\n        \"address\":\"Chennai\",\r\n        \"departmentId\":\"52\"\r\n    }\r\n",
+					"raw": "  {  \r\n    \"id\":\"555\",\r\n    \"firstName\":\"Test\",\r\n        \"lastName\":\"Test\",\r\n        \"email\":\"mahi@gmail.com\",\r\n        \"phone\":\"3354657430\",\r\n        \"gender\":\"FEMALE\",\r\n        \"age\":9,\r\n        \"salary\":\"2323\",\r\n        \"role\":\"ADMIN\",\r\n        \"address\":\"Chennai\",\r\n        \"departmentId\":\"1\"\r\n    }\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/employee"
+				"url": "{{base_url}}employee"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/employee/all",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
+			"name": "delete employee",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
-					}
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "userId",
-						"value": "1",
-						"type": "default",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "  {     \"id\":3,\r\n        \"userName\":\"Test1\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": []\r\n    }\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:8080/employee/all"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8080/employee/1",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
-					}
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "userId",
-						"value": "1",
-						"type": "default",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "  {     \"id\":3,\r\n        \"userName\":\"Test1\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": []\r\n    }\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:8080/employee/408"
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8080/employee/90",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "DELETE",
@@ -156,24 +156,24 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "  {     \"id\":3,\r\n        \"userName\":\"Test1\",\r\n        \"password\":\"ADMIN\",\r\n        \"roles\": []\r\n    }\r\n",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/employee/408"
+				"url": "{{base_url}}employee/408"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/employees",
+			"name": "update list of employees",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "PUT",
@@ -194,17 +194,17 @@
 						}
 					}
 				},
-				"url": "http://localhost:8080/employees"
+				"url": "{{base_url}}employees"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/employees",
+			"name": "save list of employees",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "POST",
@@ -225,17 +225,17 @@
 						}
 					}
 				},
-				"url": "http://localhost:8080/employees"
+				"url": "{{base_url}}employees"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/employees",
+			"name": "delete employees",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "DELETE",
@@ -256,17 +256,17 @@
 						}
 					}
 				},
-				"url": "http://localhost:8080/employees"
+				"url": "{{base_url}}employees"
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/employee/all",
+			"name": "delete all employees",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBRE1JTiIsImlhdCI6MTcxODg1MzQ3NCwiZXhwIjoxNzE5NzE3NDc0fQ.HdNzIbnZXQXUxivj8OtK8a4iK5SkEUSi0V7wCP826KbWhmWi0VMGnpJFpO6kju1wfXCNCT-VDpzhoGwlX22bRg"
+						"token": "{{token}}"
 					}
 				},
 				"method": "DELETE",
@@ -280,14 +280,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[56,676,4,345,3,34]",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "http://localhost:8080/employee/all"
+				"url": "{{base_url}}employee/all"
 			},
 			"response": []
 		}
